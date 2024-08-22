@@ -8,7 +8,7 @@ import { useMediaQuery } from "@react-hook/media-query";
 import { Filter } from "lucide-react";
 
 export default function ProductBrandFilter() {
-  const { products, brand, updateFilters } = useContext(AppContext);
+  const { brand, updateFilters } = useContext(AppContext);
   const [open, setOpen] = useState(false);
   const isDesktop = useMediaQuery("(min-width: 768px)");
   const [selectedStatus, setSelectedStatus] = useState(null);
