@@ -6,9 +6,9 @@ import Footer from "./components/Footer";
 export default function App() {
   return (
     <AppProvider>
-      <div className="flex flex-col min-h-screen">
+      <div className="flex flex-col min-h-screen ">
         <Header />
-        <div className="flex-1">
+        <div className="flex-1 bg-green-50 py-5 mt-20">
           <Outlet />
         </div>
         <Footer />

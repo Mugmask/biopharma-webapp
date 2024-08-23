@@ -38,9 +38,11 @@ export default function AppProvider({ children }) {
   const updateFilters = (newFilters) => {
     setFilters((prevFilters) => ({ ...prevFilters, ...newFilters }));
   };
+
   const removeAccents = (text) => {
     return text.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
   };
+
   // Filtrado de productos
   const filteredProducts = products.filter((product) => {
     const { search, brand } = filters;
@@ -50,8 +52,11 @@ export default function AppProvider({ children }) {
   });
 
   const filteredBrandProducts = [
-    { value: "", label: "Todas las marcas" }, // Opción inicial
-    ...Array.from(new Set(products.map((product) => product.marca))).map((brand) => ({ value: brand, label: brand })),
+    { value: "", label: "Todas las marcas" },
+    ...Array.from(new Set(products.map((product) => product.marca.trim()))).map((brand) => ({
+      value: brand,
+      label: brand,
+    })),
   ];
 
   return (

@@ -1,8 +1,11 @@
 import { useAppContext } from "../../useAppContext";
+import Loading from "../ui/Loading";
 import ProductCard from "./ProductCard";
 
 export default function ProductCatalog() {
-  const { products } = useAppContext();
+  const { products, loading } = useAppContext();
+
+  if (loading) return <Loading />;
 
   return (
     <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">

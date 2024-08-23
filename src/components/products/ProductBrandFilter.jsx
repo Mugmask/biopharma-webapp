@@ -56,7 +56,7 @@ export default function ProductBrandFilter() {
             <Filter className="mr-2 h-4 w-4" />
           </Button>
         </PopoverTrigger>
-        <PopoverContent className="w-[250px] p-0" align="start">
+        <PopoverContent className="w-[300px] p-0" align="start">
           <StatusList setOpen={setOpen} setSelectedStatus={setSelectedStatus} />
         </PopoverContent>
       </Popover>
