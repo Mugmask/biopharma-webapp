@@ -16,7 +16,7 @@ export default function Products() {
   return (
     <div className="w-full p-6 ">
       <div className="flex flex-col">
-        <h1 className="text-4xl font-semibold text-center mb-8 text-gray-900">Productos</h1>
+        <h1 className="text-4xl font-bold text-center mb-4 text-black">Productos</h1>
       </div>
       <ProductFilters />
       <ProductCatalog />

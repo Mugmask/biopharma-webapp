@@ -5,25 +5,23 @@ import { ShoppingCart } from "lucide-react";
 
 export default function Header() {
   return (
-    <header className="w-full h-30 flex items-center justify-between p-4 bg-black fixed z-20">
-      {/* Logo */}
+    <header className="w-full h-20 flex items-center justify-between p-4 bg-black fixed z-20">
       <div className="flex items-center gap-4">
-        <img src={Logo} alt="Logo" width="70" className="rounded-full" />
-        {/* Navegación */}
-        <nav className="flex items-center space-x-8 text-white">
-          <Link to="/" className="hover:text-gray-300 text-lg">
+        <img src={Logo} alt="Logo" width="60" className="rounded-full" />
+
+        <nav className="flex items-center space-x-4 text-white">
+          <Link to="/" className="hover:text-gray-300 ">
             Home
           </Link>
-          <Link to="/productos" className="hover:text-gray-300 text-lg">
+          <Link to="/productos" className="hover:text-gray-300 ">
             Productos
           </Link>
         </nav>
       </div>
 
-      {/* Carrito */}
       <Sheet>
         <SheetTrigger>
-          <ShoppingCart className="text-white hover:text-gray-300 cursor-pointer" />
+          <ShoppingCart className="text-white hover:text-gray-300 cursor-pointer h-5" />
         </SheetTrigger>
         <SheetContent>
           <SheetHeader>

@@ -51,7 +51,7 @@ export default function ProductBrandFilter() {
     return (
       <Popover open={open} onOpenChange={setOpen}>
         <PopoverTrigger asChild>
-          <Button variant="outline" className="w-[300px] justify-between">
+          <Button variant="outline" className="w-[300px] justify-between ">
             {!selectedStatus || selectedStatus.value == "" ? "Filtrar por marca" : selectedStatus.label}
             <Filter className="mr-2 h-4 w-4" />
           </Button>

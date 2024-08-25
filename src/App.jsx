@@ -8,7 +8,7 @@ export default function App() {
     <AppProvider>
       <div className="flex flex-col min-h-screen ">
         <Header />
-        <div className="flex-1 bg-green-50 py-5 mt-20">
+        <div className="flex-1 bg-slate-50 py-5 mt-14">
           <Outlet />
         </div>
         <Footer />
