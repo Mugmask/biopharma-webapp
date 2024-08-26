@@ -34,7 +34,6 @@ export default function AppProvider({ children }) {
     setCart((prevCart) => prevCart.filter((item) => item.id !== productId));
   };
 
-  // Función para actualizar los filtros
   const updateFilters = (newFilters) => {
     setFilters((prevFilters) => ({ ...prevFilters, ...newFilters }));
   };
@@ -43,7 +42,6 @@ export default function AppProvider({ children }) {
     return text.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
   };
 
-  // Filtrado de productos
   const filteredProducts = products.filter((product) => {
     const { search, brand } = filters;
     const nameMatches = removeAccents(product.nombre).toLowerCase().includes(search.toLowerCase());
