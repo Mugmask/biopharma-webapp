@@ -5,12 +5,12 @@ import { getProducts } from "../../services/sheetService";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Button } from "@/components/ui/Button";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Minus, Plus } from "lucide-react"; // Íconos para el botón
-
+import { Minus, Plus } from "lucide-react";
 import ImageLoader from "../ui/ImageLoader";
+import { Input } from "../ui/input";
 
 export default function ProductView() {
-  const { products, setProducts } = useAppContext();
+  const { products, addToCart } = useAppContext();
   const { productId } = useParams();
   const [product, setProduct] = useState(null);
   const [selectedUnit, setSelectedUnit] = useState("");
@@ -18,15 +18,39 @@ export default function ProductView() {
   const [quantity, setQuantity] = useState(1);
   const [isLoading, setIsLoading] = useState(true);
 
+  const handleAddCart = () => {
+    const cartProduct = {
+      ...product,
+      detalles: { unidad: selectedUnit, precio: selectedPrice, cantidad: quantity },
+    };
+
+    addToCart(cartProduct); // Agrega la copia modificada al carrito
+  };
   const handleImageLoad = () => {
     setIsLoading(false);
   };
+  const handleUnitChange = (unit) => {
+    const selected = unit;
+    setSelectedUnit(selected);
+    const selectedDetail = product.detalles.find((detail) => detail.unidad === selected);
+    setSelectedPrice(selectedDetail ? selectedDetail.precio : "");
+  };
+  const handleIncrease = () => {
+    setQuantity((prev) => prev + 1);
+  };
+  const handleDecrease = () => {
+    setQuantity((prev) => (prev > 1 ? prev - 1 : 1));
+  };
+  const handleQuantityChange = (e) => {
+    const value = parseInt(e.target.value, 10);
+    setQuantity(value >= 1 ? value : 1); // Asegurarse de que la cantidad mínima sea 1
+  };
+
   useEffect(() => {
     const fetchProducts = async () => {
       if (!products || !products.length) {
         const fetchedProducts = await getProducts();
-        setProducts(fetchedProducts);
-        const foundProduct = fetchedProducts.find((x) => x.id === productId);
+        const foundProduct = fetchedProducts.data.find((x) => x.id === productId);
         setProduct(foundProduct);
         if (foundProduct && foundProduct.detalles.length > 0) {
           setSelectedUnit(foundProduct.detalles[0].unidad);
@@ -43,25 +67,9 @@ export default function ProductView() {
     };
 
     fetchProducts();
-  }, [products, productId, setProducts]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [products]);
 
-  const handleUnitChange = (unit) => {
-    const selected = unit;
-    setSelectedUnit(selected);
-    const selectedDetail = product.detalles.find((detail) => detail.unidad === selected);
-    setSelectedPrice(selectedDetail ? selectedDetail.precio : "");
-  };
-  const handleIncrease = () => {
-    setQuantity((prev) => prev + 1);
-  };
-
-  const handleDecrease = () => {
-    setQuantity((prev) => (prev > 1 ? prev - 1 : 1));
-  };
-  const handleQuantityChange = (e) => {
-    const value = parseInt(e.target.value, 10);
-    setQuantity(value >= 1 ? value : 1); // Asegurarse de que la cantidad mínima sea 1
-  };
   if (!product) {
     return <ImageLoader />;
   }
@@ -71,15 +79,16 @@ export default function ProductView() {
       <div className="bg-white flex flex-col lg:flex-row border rounded-lg overflow-hidden h-full">
         <div className=" flex w-full lg:w-[60%] p-4 justify-center items-center">
           {isLoading && (
-            <div className=" w-full h-96 lg:h-screen flex">
+            <div className="flex w-full h-96 lg:h-screen">
               <Skeleton className="w-full h-full rounded-lg" />
             </div>
           )}
+
           <img
             src={`https://drive.google.com/thumbnail?id=${product.imagen}&sz=w1000`}
             alt={product.nombre}
             className={`w-full h-auto object-cover rounded-lg transition-opacity duration-300 ${
-              isLoading ? "opacity-0" : "opacity-100"
+              isLoading ? "hidden opacity-0" : "opacity-100"
             }`}
             onLoad={handleImageLoad}
           />
@@ -94,7 +103,7 @@ export default function ProductView() {
 
           <div className="flex flex-col bg-white  rounded-lg space-y-4 gap-4">
             <div className="flex justify-center w-full gap-3">
-              {product.detalles.length !== 1 && (
+              {product.detalles[0].unidad && (
                 <div className="w-full flex flex-col gap-3">
                   <p className="text-lg font-semibold text-gray-700">Unidad</p>
                   <Select onValueChange={handleUnitChange} defaultValue={selectedUnit}>
@@ -118,7 +127,7 @@ export default function ProductView() {
                     onClick={handleDecrease}
                     className="absolute left-1 cursor-pointer h-4 w-4 opacity-50 mx-3 hover:opacity-100"
                   />
-                  <input
+                  <Input
                     type="number"
                     value={quantity}
                     onChange={handleQuantityChange}
@@ -132,7 +141,9 @@ export default function ProductView() {
                 </div>
               </div>
             </div>
-            <Button className="w-full my-10 h-12">AGREGAR AL CARRITO</Button>
+            <Button className="w-full my-10 h-12" onClick={handleAddCart}>
+              AGREGAR AL CARRITO
+            </Button>
           </div>
 
           <div className="flex flex-col gap-5">
