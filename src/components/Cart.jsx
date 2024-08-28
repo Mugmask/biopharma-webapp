@@ -9,16 +9,16 @@ export default function Cart() {
   const handlePurchase = () => {
     const message = generateCartMessage(cart);
     console.log(message);
-    /*     const whatsAppLink = `https://wa.me/+5492234399100?text=${encodeURIComponent(message)}&`;
-    window.location.href = whatsAppLink; */
+    const whatsAppLink = `https://wa.me/+5492234399100?text=${encodeURIComponent(message)}&`;
+    window.location.href = whatsAppLink;
   };
 
   const generateCartMessage = (cart) => {
     return cart
       .map((item) => {
         const { nombre, detalles } = item;
-        const { precioTotal, cantidad } = detalles;
-        return `${cantidad}x - ${nombre} - ${precioTotal.toLocaleString("es-ar", {
+        const { precioTotal, cantidad, unidad } = detalles;
+        return `${cantidad}x - ${nombre} - ${unidad ? `${unidad} -` : ""} ${precioTotal.toLocaleString("es-ar", {
           style: "currency",
           currency: "ARS",
           minimumFractionDigits: 0,
