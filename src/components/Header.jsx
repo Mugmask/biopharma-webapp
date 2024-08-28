@@ -1,18 +1,27 @@
-import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
+import { useEffect } from "react";
+import { Sheet, SheetContent, SheetDescription, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
 import { useAppContext } from "../useAppContext";
 import Logo from "../assets/logo_biopharma.jpg";
 import { Link } from "react-router-dom";
 import { ShoppingCart } from "lucide-react";
 import Cart from "./Cart";
-import { useEffect, useState } from "react";
 
 export default function Header() {
-  const { cart } = useAppContext();
-  const [isOpen, setIsOpen] = useState(false);
+  const { cart, isCartOpen, toggleCart, closeCart } = useAppContext();
 
   useEffect(() => {
-    if (cart.length) setIsOpen(true);
-  }, [cart]);
+    const handlePopState = () => {
+      if (isCartOpen) {
+        closeCart();
+      }
+    };
+
+    window.addEventListener("popstate", handlePopState);
+    return () => {
+      window.removeEventListener("popstate", handlePopState);
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isCartOpen]);
 
   return (
     <header className="w-full h-20 flex items-center justify-between p-4 bg-black fixed z-20">
@@ -28,7 +37,7 @@ export default function Header() {
           </Link>
         </nav>
       </div>
-      <Sheet open={isOpen} onOpenChange={setIsOpen}>
+      <Sheet open={isCartOpen} onOpenChange={toggleCart}>
         <SheetTrigger>
           <div className="relative w-9 h-9 flex justify-center items-center">
             <span className="w-4 h-4 rounded-full bg-white absolute top-0 right-0 flex justify-center items-center text-[10px]">
@@ -37,9 +46,10 @@ export default function Header() {
             <ShoppingCart className="text-white hover:text-gray-300 cursor-pointer h-5 " />
           </div>
         </SheetTrigger>
-        <SheetContent className="w-full lg:w-1/3 lg:max-w-none">
+        <SheetContent className="w-full lg:w-1/3 lg:max-w-none" onOpenAutoFocus={(e) => e.preventDefault()}>
           <SheetHeader>
             <SheetTitle className="text-2xl">Carrito de compras</SheetTitle>
+            <SheetDescription>{""}</SheetDescription>
           </SheetHeader>
           <Cart />
         </SheetContent>

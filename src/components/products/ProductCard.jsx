@@ -13,7 +13,7 @@ export default function ProductCard({ product }) {
   };
   return (
     <Link to={`/productos/${product.id}`} key={product.id}>
-      <Card className="bg-white rounded-lg hover:shadow-xl ">
+      <Card className="bg-white rounded-lg hover:shadow-xl h-full flex flex-col justify-around">
         <CardHeader>
           {isLoading && <Skeleton className="w-full h-[400px] rounded-md" />}
           <img

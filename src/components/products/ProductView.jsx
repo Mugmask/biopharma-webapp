@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useAppContext } from "../../useAppContext";
 import { useParams } from "react-router-dom";
 import { getProducts } from "../../services/sheetService";
@@ -10,7 +10,7 @@ import ImageLoader from "../ui/ImageLoader";
 import { Input } from "../ui/input";
 
 export default function ProductView() {
-  const { products, addToCart } = useAppContext();
+  const { products, cart, addToCart, openCart, updateCartItem } = useAppContext();
   const { productId } = useParams();
   const [product, setProduct] = useState(null);
   const [selectedUnit, setSelectedUnit] = useState("");
@@ -18,13 +18,27 @@ export default function ProductView() {
   const [quantity, setQuantity] = useState(1);
   const [isLoading, setIsLoading] = useState(true);
 
+  const selectedUnitRef = useRef(selectedUnit);
+  const selectedPriceRef = useRef(selectedPrice);
+
   const handleAddCart = () => {
+    const selectedUnitValue = selectedUnitRef.current ? selectedUnitRef.current : product.detalles[0].unidad;
+    const selectedPriceValue = selectedPriceRef.current ? selectedPriceRef.current : product.detalles[0].precio;
     const cartProduct = {
       ...product,
-      detalles: { unidad: selectedUnit, precio: selectedPrice, cantidad: quantity },
+      detalles: { unidad: selectedUnitValue, precio: selectedPriceValue, cantidad: quantity },
+      cartId: `${product.id}-${selectedUnitValue || "none"}`,
     };
 
-    addToCart(cartProduct); // Agrega la copia modificada al carrito
+    const findItem = cart.filter((item) => item.cartId == cartProduct.cartId);
+
+    if (findItem.length) {
+      const newQuantity = quantity + findItem[0].detalles.cantidad;
+      updateCartItem(cartProduct.cartId, { cantidad: newQuantity });
+    } else {
+      addToCart(cartProduct);
+    }
+    openCart();
   };
   const handleImageLoad = () => {
     setIsLoading(false);
@@ -34,6 +48,8 @@ export default function ProductView() {
     setSelectedUnit(selected);
     const selectedDetail = product.detalles.find((detail) => detail.unidad === selected);
     setSelectedPrice(selectedDetail ? selectedDetail.precio : "");
+    selectedUnitRef.current = selected;
+    selectedPriceRef.current = selectedDetail?.precio || "";
   };
   const handleIncrease = () => {
     setQuantity((prev) => prev + 1);
@@ -102,7 +118,7 @@ export default function ProductView() {
           </div>
 
           <div className="flex flex-col bg-white  rounded-lg space-y-4 gap-4">
-            <div className="flex justify-center w-full gap-3">
+            <div className="flex  w-full gap-3">
               {product.detalles[0].unidad && (
                 <div className="w-full flex flex-col gap-3">
                   <p className="text-lg font-semibold text-gray-700">Unidad</p>
@@ -120,7 +136,7 @@ export default function ProductView() {
                   </Select>
                 </div>
               )}
-              <div className="w-full flex flex-col gap-3">
+              <div className={`${product.detalles[0].unidad ? "w-full" : "w-full sm:w-1/2"} flex flex-col gap-3`}>
                 <p className="text-lg font-semibold text-gray-700">Cantidad</p>
                 <div className="relative flex items-center justify-center w-full">
                   <Minus

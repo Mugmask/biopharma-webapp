@@ -4,7 +4,7 @@ import ProductCartView from "./products/ProductCartView";
 import { Link } from "react-router-dom";
 
 export default function Cart() {
-  const { cart } = useAppContext();
+  const { cart, closeCart } = useAppContext();
 
   if (!cart.length) {
     return (
@@ -23,9 +23,9 @@ export default function Cart() {
           ))}
         </div>
       </div>
-      <div className="flex flex-col gap-4 mb-6 mt-4">
+      <div className="flex flex-col gap-4 mb-9 mt-4">
         <Button>Iniciar Compra</Button>
-        <Link to={"/productos"} className="w-full">
+        <Link to={"/productos"} className="w-full" onClick={closeCart}>
           <Button variant="secondary" className="w-full">
             Ver más productos
           </Button>

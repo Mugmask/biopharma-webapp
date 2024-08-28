@@ -7,6 +7,7 @@ export const AppContext = createContext();
 export default function AppProvider({ children }) {
   const [products, setProducts] = useState([]);
   const [cart, setCart] = useState([]);
+  const [isCartOpen, setCartIsOpen] = useState(false);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [filters, setFilters] = useState({ search: "", brand: "" });
@@ -30,9 +31,30 @@ export default function AppProvider({ children }) {
     setCart((prevCart) => [...prevCart, product]);
   };
 
-  const removeFromCart = (productId) => {
-    setCart((prevCart) => prevCart.filter((item) => item.id !== productId));
+  const updateCartItem = (cartId, updatedFields) => {
+    setCart((prevCart) =>
+      prevCart.map((item) => {
+        if (item.cartId === cartId) {
+          return {
+            ...item,
+            detalles: {
+              ...item.detalles,
+              ...updatedFields,
+            },
+          };
+        }
+        return item;
+      })
+    );
   };
+
+  const removeFromCart = (cartId) => {
+    setCart((prevCart) => prevCart.filter((item) => item.cartId !== cartId));
+  };
+
+  const openCart = () => setCartIsOpen(true);
+  const closeCart = () => setCartIsOpen(false);
+  const toggleCart = () => setCartIsOpen((prev) => !prev);
 
   const updateFilters = (newFilters) => {
     setFilters((prevFilters) => ({ ...prevFilters, ...newFilters }));
@@ -63,7 +85,12 @@ export default function AppProvider({ children }) {
         products: filteredProducts,
         brand: filteredBrandProducts,
         cart,
+        isCartOpen,
+        openCart,
+        closeCart,
+        toggleCart,
         addToCart,
+        updateCartItem,
         removeFromCart,
         loading,
         error,
