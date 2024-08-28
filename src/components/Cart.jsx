@@ -16,13 +16,19 @@ export default function Cart() {
 
   return (
     <div className="flex flex-col w-full h-full justify-between">
-      {cart.map((item, index) => (
-        <ProductCartView key={index} product={item} />
-      ))}
-      <div className="flex flex-col gap-4 mb-6">
+      <div className="overflow-y-auto pr-2">
+        <div className="flex flex-col gap-3 mt-6">
+          {cart.map((item, index) => (
+            <ProductCartView key={index} product={item} />
+          ))}
+        </div>
+      </div>
+      <div className="flex flex-col gap-4 mb-6 mt-4">
         <Button>Iniciar Compra</Button>
-        <Link to={"/productos"}>
-          <Button variant="secondary">Ver más productos</Button>
+        <Link to={"/productos"} className="w-full">
+          <Button variant="secondary" className="w-full">
+            Ver más productos
+          </Button>
         </Link>
       </div>
     </div>

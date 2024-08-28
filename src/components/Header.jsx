@@ -30,7 +30,12 @@ export default function Header() {
       </div>
       <Sheet open={isOpen} onOpenChange={setIsOpen}>
         <SheetTrigger>
-          <ShoppingCart className="text-white hover:text-gray-300 cursor-pointer h-5" />
+          <div className="relative w-9 h-9 flex justify-center items-center">
+            <span className="w-4 h-4 rounded-full bg-white absolute top-0 right-0 flex justify-center items-center text-[10px]">
+              {cart.length}
+            </span>
+            <ShoppingCart className="text-white hover:text-gray-300 cursor-pointer h-5 " />
+          </div>
         </SheetTrigger>
         <SheetContent className="w-full lg:w-1/3 lg:max-w-none">
           <SheetHeader>
