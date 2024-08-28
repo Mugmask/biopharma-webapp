@@ -3,7 +3,7 @@ import { useAppContext } from "../../useAppContext";
 import { useParams } from "react-router-dom";
 import { getProducts } from "../../services/sheetService";
 import { Skeleton } from "@/components/ui/skeleton";
-import { Button } from "@/components/ui/Button";
+import { Button } from "@/components/ui/button";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Minus, Plus } from "lucide-react";
 import ImageLoader from "../ui/ImageLoader";

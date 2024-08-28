@@ -1,6 +1,6 @@
 import { useState, useContext, useEffect } from "react";
 import { AppContext } from "../../AppProvider";
-import { Button } from "../ui/button"; // Ajusta la ruta según tu proyecto
+import { Button } from "../ui/button";
 import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList } from "../ui/command"; // Ajusta la ruta según tu proyecto
 import { Drawer, DrawerContent, DrawerTrigger } from "../ui/drawer"; // Ajusta la ruta según tu proyecto
 import { Popover, PopoverContent, PopoverTrigger } from "../ui/popover"; // Ajusta la ruta según tu proyecto

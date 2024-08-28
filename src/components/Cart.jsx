@@ -1,4 +1,4 @@
-import { Button } from "@/components/ui/Button";
+import { Button } from "@/components/ui/button";
 import { useAppContext } from "../useAppContext";
 import ProductCartView from "./products/ProductCartView";
 import { Link } from "react-router-dom";
