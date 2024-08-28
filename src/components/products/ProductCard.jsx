@@ -11,6 +11,7 @@ export default function ProductCard({ product }) {
   const handleImageLoad = () => {
     setIsLoading(false);
   };
+
   return (
     <Link to={`/productos/${product.id}`} key={product.id}>
       <Card className="bg-white rounded-lg hover:shadow-xl h-full flex flex-col justify-around">

@@ -26,7 +26,12 @@ export default function ProductView() {
     const selectedPriceValue = selectedPriceRef.current ? selectedPriceRef.current : product.detalles[0].precio;
     const cartProduct = {
       ...product,
-      detalles: { unidad: selectedUnitValue, precio: selectedPriceValue, cantidad: quantity },
+      detalles: {
+        unidad: selectedUnitValue,
+        precio: selectedPriceValue,
+        cantidad: quantity,
+        precioTotal: parseInt(selectedPriceValue.replace("$", "").replace(".", ""), 10) * quantity,
+      },
       cartId: `${product.id}-${selectedUnitValue || "none"}`,
     };
 
@@ -34,7 +39,10 @@ export default function ProductView() {
 
     if (findItem.length) {
       const newQuantity = quantity + findItem[0].detalles.cantidad;
-      updateCartItem(cartProduct.cartId, { cantidad: newQuantity });
+      updateCartItem(cartProduct.cartId, {
+        cantidad: newQuantity,
+        precioTotal: parseInt(selectedPriceValue.replace("$", "").replace(".", ""), 10) * newQuantity,
+      });
     } else {
       addToCart(cartProduct);
     }
@@ -71,6 +79,8 @@ export default function ProductView() {
         if (foundProduct && foundProduct.detalles.length > 0) {
           setSelectedUnit(foundProduct.detalles[0].unidad);
           setSelectedPrice(foundProduct.detalles[0].precio);
+          selectedUnitRef.current = foundProduct.detalles[0].unidad;
+          selectedPriceRef.current = foundProduct.detalles[0].precio;
         }
       } else {
         const foundProduct = products.find((x) => x.id === productId);
@@ -78,13 +88,15 @@ export default function ProductView() {
         if (foundProduct && foundProduct.detalles.length > 0) {
           setSelectedUnit(foundProduct.detalles[0].unidad);
           setSelectedPrice(foundProduct.detalles[0].precio);
+          selectedUnitRef.current = foundProduct.detalles[0].unidad;
+          selectedPriceRef.current = foundProduct.detalles[0].precio;
         }
       }
     };
 
     fetchProducts();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [products]);
+  }, []);
 
   if (!product) {
     return <ImageLoader />;
@@ -114,7 +126,7 @@ export default function ProductView() {
         <div className=" flex flex-col p-6 space-y- lg:border-l w-full lg:w-[40%] gap-10">
           <div className="flex flex-col gap-4">
             <h1 className="text-4xl font-bold text-gray-900 mb-2">{product.nombre}</h1>
-            <p className="text-3xl font-bold text-gray-900">{selectedPrice}</p>
+            <p className="text-3xl font-bold text-gray-900">{selectedPriceRef.current}</p>
           </div>
 
           <div className="flex flex-col bg-white  rounded-lg space-y-4 gap-4">
@@ -122,7 +134,7 @@ export default function ProductView() {
               {product.detalles[0].unidad && (
                 <div className="w-full flex flex-col gap-3">
                   <p className="text-lg font-semibold text-gray-700">Unidad</p>
-                  <Select onValueChange={handleUnitChange} defaultValue={selectedUnit}>
+                  <Select onValueChange={handleUnitChange} defaultValue={selectedUnitRef.current}>
                     <SelectTrigger className="w-full">
                       <SelectValue placeholder="Seleccione la unidad" />
                     </SelectTrigger>

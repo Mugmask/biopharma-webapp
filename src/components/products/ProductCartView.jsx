@@ -12,7 +12,11 @@ export default function ProductCartView({ product }) {
   const [quantity, setQuantity] = useState(product.detalles.cantidad);
 
   useEffect(() => {
-    updateCartItem(product.cartId, { cantidad: quantity });
+    if (quantity !== product.detalles.cantidad)
+      updateCartItem(product.cartId, {
+        cantidad: quantity,
+        precioTotal: parseInt(product.detalles.precio.replace("$", "").replace(".", ""), 10) * quantity,
+      });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [product.cartId, quantity]);
 
@@ -58,7 +62,12 @@ export default function ProductCartView({ product }) {
             product.detalles.unidad ? `(${product.detalles.unidad})` : ""
           }`}</CardTitle>
           <CardDescription className="text-gray-700 text-md mb-2 font-semibold ">
-            {product.detalles.precio}
+            {product.detalles.precioTotal.toLocaleString("es-ar", {
+              style: "currency",
+              currency: "ARS",
+              minimumFractionDigits: 0,
+              maximumFractionDigits: 0,
+            })}
           </CardDescription>
 
           <div className="w-[150px] flex flex-col gap-3">
