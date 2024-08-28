@@ -6,8 +6,8 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { Button } from "@/components/ui/button";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Minus, Plus } from "lucide-react";
-import ImageLoader from "../ui/ImageLoader";
-import { Input } from "../ui/input";
+import ImageLoader from "@/components/ui/ImageLoader";
+import { Input } from "@/components/ui/input";
 
 export default function ProductView() {
   const { products, cart, addToCart, openCart, updateCartItem } = useAppContext();

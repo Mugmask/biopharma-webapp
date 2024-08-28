@@ -1,5 +1,5 @@
 import { useAppContext } from "../../useAppContext";
-import Loading from "../ui/Loading";
+import Loading from "@/components/ui/Loading";
 import ProductCard from "./ProductCard";
 
 export default function ProductCatalog() {

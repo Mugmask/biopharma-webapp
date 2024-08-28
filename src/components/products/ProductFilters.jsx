@@ -1,6 +1,6 @@
 import { useContext } from "react";
 import { AppContext } from "../../AppProvider";
-import { Input } from "../ui/input";
+import { Input } from "@/components/ui/input";
 import { Search } from "lucide-react";
 import ProductBrandFilter from "./ProductBrandFilter";
 

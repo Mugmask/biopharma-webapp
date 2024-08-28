@@ -3,7 +3,7 @@ import { useState, useEffect } from "react";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useAppContext } from "../../useAppContext";
-import { Input } from "../ui/input";
+import { Input } from "@/components/ui/input";
 import { Minus, Plus, Trash } from "lucide-react";
 
 export default function ProductCartView({ product }) {
